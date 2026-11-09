@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Apple Color Emoji"; src: local("Apple Color Emoji"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+
+      .st { position: absolute; inset: 0; overflow: hidden; }
+      .ciano { background: #34BFD3; }
+            .preto { background: #01071A; }
+
+      .emo { font-family: "Apple Color Emoji", sans-serif; font-style: normal; font-weight: 400; }
+      .tag { display: inline-block; background: #01071A; color: #fff; padding: 6px 24px 12px; }
+      .hl { background: #01071A; color: #fff; padding: 0 12px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+      .mk { padding-bottom: 10px; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'><path d='M3 12 C 60 6, 120 15, 180 9 S 270 7, 297 12' fill='none' stroke='%2301071A' stroke-width='6' stroke-linecap='round'/></svg>") left bottom / 100% 22px no-repeat; }
+
+      .react { position: absolute; width: 230px; height: 230px; }
+      .react .tab { position: absolute; right: -6px; bottom: -6px; width: 92px; height: 92px; border-radius: 18px; background: #d9d9d9; }
+      .react .bola { position: absolute; inset: 0; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 118px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+
+      .pill-top { position: absolute; left: 0; top: 250px; width: 1080px; display: flex; justify-content: center; }
+      .pill-top span { background: #34BFD3; color: #01071A; font-family: Roboto, sans-serif; font-weight: 700; font-size: 34px; letter-spacing: 0.01em; padding: 14px 40px; border-radius: 60px; }
+
+      /* Story 1: caixinha respondida */
+      #s1 .qbox { position: absolute; left: 66px; top: 300px; width: 640px; border-radius: 36px; overflow: hidden; background: #fff; transform: rotate(-1.5deg); }
+      #s1 .qbox .qh { background: #01071A; color: #fff; font-family: Roboto, sans-serif; font-size: 30px; text-align: center; padding: 26px 20px 22px; }
+      #s1 .qbox .qb { color: #01071A; font-family: Roboto, sans-serif; font-weight: 500; font-size: 44px; line-height: 1.22; text-align: center; padding: 34px 40px 40px; }
+      #s1 .txt { position: absolute; left: 70px; top: 680px; width: 940px; font-family: Oswald, sans-serif; font-weight: 400; font-size: 47px; line-height: 1.32; color: #01071A; }
+      #s1 .txt p + p { margin-top: 38px; }
+      #s1 .rosa { background: #fff; color: #01071A; padding: 0 12px; }
+      #s1 .cont { position: absolute; right: 90px; top: 1290px; font-family: "Playfair Display", serif; font-size: 52px; transform: rotate(-3deg); }
+
+      /* Story 2: NPS */
+      #s2 .txt { position: absolute; left: 70px; top: 420px; width: 940px; font-family: "Playfair Display", serif; font-size: 52px; line-height: 1.3; color: #fff; text-align: center; }
+      #s2 .txt p + p { margin-top: 40px; }
+      #s2 .ouro { color: #34BFD3; }
+      #s2 .msg { position: absolute; left: 110px; top: 760px; width: 860px; background: #fff; border-radius: 30px; padding: 40px 44px 44px; transform: rotate(1.2deg); }
+      #s2 .msg .q { font-family: Roboto, sans-serif; font-weight: 500; font-size: 42px; line-height: 1.3; color: #01071A; text-align: center; }
+      #s2 .escala { display: flex; justify-content: space-between; margin-top: 34px; }
+      #s2 .escala span { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Roboto, sans-serif; font-weight: 700; font-size: 32px; color: #fff; }
+      #s2 .r { background: #FF5F57; }
+      #s2 .a { background: #FEBC2E; }
+      #s2 .v { background: #28C840; }
+      #s2 .fim { position: absolute; left: 70px; top: 1230px; width: 940px; font-family: "Playfair Display", serif; font-size: 52px; line-height: 1.3; color: #fff; text-align: center; }
+
+      /* Story 3: o que fazer com cada nota */
+      #s3 .txt { position: absolute; left: 110px; top: 340px; width: 870px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 58px; line-height: 1.24; color: #01071A; }
+      #s3 .txt p + p { margin-top: 52px; }
+      #s3 .esc { background: #fff; padding: 0 10px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+      #s3 .lab { position: absolute; left: 110px; top: 1330px; background: #fff; color: #01071A; font-family: "Playfair Display", serif; font-size: 42px; padding: 10px 26px 14px; }
+      #s3 .react { left: 690px; top: 1230px; }
+
+      /* Story 4: o que você ganha */
+      #s4 .txt { position: absolute; left: 70px; top: 380px; width: 940px; font-family: "Playfair Display", serif; font-size: 48px; line-height: 1.32; color: #fff; }
+      #s4 .txt p + p { margin-top: 44px; }
+      #s4 .ouro { color: #34BFD3; }
+      #s4 .cor { color: #0BDEA4; }
+      #s4 .react { left: 425px; top: 1360px; }
+
+      /* Story 5: enquete */
+      #s5 .topo { position: absolute; left: 70px; top: 540px; width: 940px; font-family: "Playfair Display", serif; font-size: 64px; line-height: 1.25; color: #01071A; text-align: center; }
+      #s5 .poll { position: absolute; left: 150px; top: 720px; width: 780px; background: #fff; border-radius: 40px; padding: 44px 40px 40px; transform: rotate(-1deg); box-shadow: 0 10px 40px rgba(0,0,0,0.12); }
+      #s5 .poll .pq { font-family: Roboto, sans-serif; font-weight: 700; font-size: 44px; line-height: 1.24; color: #01071A; text-align: center; }
+      #s5 .poll .op { margin-top: 26px; border: 3px solid #E3E6EA; border-radius: 80px; padding: 24px 36px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 40px; color: #01071A; }
+      #s5 .poll .pq + .op { margin-top: 38px; }
+      #s5 .rod { position: absolute; left: 90px; top: 1310px; width: 900px; font-family: Oswald, sans-serif; font-size: 46px; line-height: 1.3; color: #01071A; text-align: center; }
+
+      /* Story 6: caixinha aberta */
+      #s6 .topo { position: absolute; left: 90px; top: 520px; width: 900px; font-family: Roboto, sans-serif; font-weight: 700; font-size: 60px; line-height: 1.22; color: #fff; text-align: center; }
+      #s6 .qbox { position: absolute; left: 150px; top: 790px; width: 780px; border-radius: 40px; overflow: hidden; background: #fff; transform: rotate(1.5deg); box-shadow: 0 10px 40px rgba(0,0,0,0.14); }
+      #s6 .qbox .qh { background: #34BFD3; color: #01071A; font-family: Roboto, sans-serif; font-weight: 700; font-size: 46px; line-height: 1.22; text-align: center; padding: 48px 50px 44px; }
+      #s6 .qbox .qb { padding: 34px 40px 40px; }
+      #s6 .qbox .inp { background: #F6F7F9; border-radius: 24px; padding: 30px 34px; font-family: Roboto, sans-serif; font-size: 38px; color: #9a9a9a; text-align: center; }
+      #s6 .rod { position: absolute; left: 90px; top: 1290px; width: 900px; font-family: "Playfair Display", serif; font-size: 46px; line-height: 1.3; color: #fff; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="1080" data-height="1920">
+
+      <div id="s1" class="st ciano clip" data-start="0" data-duration="1" data-track-index="0">
+        <div class="qbox">
+          <div class="qh">Faça uma pergunta</div>
+          <div class="qb">Antes de pedir avaliação no Google, o que vocês fazem?</div>
+        </div>
+        <div class="txt">
+          <p>Antes de pedir? <span class="rosa">Bem sincero?</span></p>
+          <p>A maioria dos consultórios manda o link do Google pra todo paciente no WhatsApp. E depois se assusta com uma avaliação de 2 estrelas que ninguém esperava. <span class="emo">🫠</span></p>
+          <p>A gente faz diferente: primeiro <span class="hl">mede</span>, depois pede.</p>
+        </div>
+        <div class="cont"><span class="tag">Continua <span class="emo">👉</span></span></div>
+      </div>
+
+      <div id="s2" class="st preto clip" data-start="1" data-duration="1" data-track-index="0">
+        <div class="pill-top"><span>SEGURE COM O DEDO PARA LER</span></div>
+        <div class="txt">
+          <p>Antes de pedir avaliação, a gente aplica uma <span class="ouro">NPS</span> pelo WhatsApp.</p>
+          <p>É só aquela pergunta:</p>
+        </div>
+        <div class="msg">
+          <div class="q">Numa escala de 0 a 10, qual a chance de você indicar o Dr. Fulano para alguém?</div>
+          <div class="escala">
+            <span class="r">0</span><span class="r">1</span><span class="r">2</span><span class="r">3</span><span class="r">4</span><span class="r">5</span><span class="r">6</span><span class="a">7</span><span class="a">8</span><span class="v">9</span><span class="v">10</span>
+          </div>
+        </div>
+        <div class="fim">A nota que ele dá <span class="ouro">decide o próximo passo.</span> <span class="emo">👇</span></div>
+      </div>
+
+      <div id="s3" class="st ciano clip" data-start="2" data-duration="1" data-track-index="0">
+        <div class="txt">
+          <p>Respondeu 9 ou 10? Recebe o <span class="esc">link pra avaliar no Google.</span> <span class="emo">⭐</span></p>
+          <p>Respondeu 7 ou 8? Vem a próxima pergunta: <span class="esc">o que faltou pra chegar no 10?</span></p>
+          <p>De 0 a 6? É um paciente que vai falar mal. A secretária é avisada e <span class="mk">precisa resolver a vida desse paciente.</span></p>
+        </div>
+        <div class="lab">Faz sentido, doutor(a)? <span class="emo">👉</span></div>
+        <div class="react"><div class="tab"></div><div class="bola emo">✋</div></div>
+      </div>
+
+      <div id="s4" class="st preto clip" data-start="3" data-duration="1" data-track-index="0">
+        <div class="txt">
+          <p>Quando o consultório começa a fazer isso, ganha <span class="ouro">três coisas de uma vez:</span></p>
+          <p><span class="ouro">Reputação no Google,</span> porque o link só vai pra quem saiu feliz.</p>
+          <p><span class="ouro">Posicionamento nas IAs,</span> que também olham pras suas avaliações.</p>
+          <p><span class="ouro">Experiência do paciente,</span> porque agora você tem feedback concreto pra aplicar melhorias.</p>
+          <p>Avaliação boa é o fim do processo. <span class="cor">Medir o atendimento é o começo.</span></p>
+        </div>
+        <div class="react"><div class="tab"></div><div class="bola emo">😍</div></div>
+      </div>
+
+      <div id="s5" class="st ciano clip" data-start="4" data-duration="1" data-track-index="0">
+        <div class="topo">E aí, doutor(a)? <span class="emo">👀</span></div>
+        <div class="poll">
+          <div class="pq">Você mede a satisfação do paciente antes de pedir avaliação?</div>
+          <div class="op">Já faço isso <span class="emo">✅</span></div>
+          <div class="op">Ainda não <span class="emo">😅</span></div>
+        </div>
+        <div class="rod">Vota aí. Quero ver quantos já fazem.</div>
+      </div>
+
+      <div id="s6" class="st preto clip" data-start="5" data-duration="1" data-track-index="0">
+        <div class="topo">Quer montar isso no seu consultório?</div>
+        <div class="qbox">
+          <div class="qh">Me manda sua dúvida sobre avaliações no Google <span class="emo">👇</span></div>
+          <div class="qb"><div class="inp">Escreva algo...</div></div>
+        </div>
+        <div class="rod">Respondo as melhores <span class="tag" style="font-size:42px; background:#34BFD3; color:#01071A">nos próximos stories</span></div>
+      </div>
+
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

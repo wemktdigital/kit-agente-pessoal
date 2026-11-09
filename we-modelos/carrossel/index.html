@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Apple Color Emoji"; src: local("Apple Color Emoji"); }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1350px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: #000; font-family: Inter, sans-serif; }
+
+      :root {
+        --ciano: #29CEDF; --ciano-escuro: #006875; --verde: #2FDEA4;
+        --titulo: #181818; --texto: #444444; --apoio: #666666; --borda: #E5E5E5; --sup: #F7F7F7;
+        --escuro: #000000; --card-escuro: #0A0A0A; --borda-escura: #292929; --texto-escuro: #C6C6C6;
+      }
+
+      .sl { position: absolute; inset: 0; overflow: hidden; }
+      .sl.dark { background: var(--escuro); color: #fff; }
+      .sl.light { background: #fff; color: var(--titulo); }
+      .grade { position: absolute; inset: 0; background-size: 120px 120px; background-position: center top;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.26), transparent 75%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.26), transparent 75%); }
+      .dark .grade { background-image: linear-gradient(#292929 2px, transparent 2px), linear-gradient(90deg, #292929 2px, transparent 2px); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 70%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 70%); }
+      .light .grade { background-image: linear-gradient(#E5E5E5 2px, transparent 2px), linear-gradient(90deg, #E5E5E5 2px, transparent 2px); }
+      .brilho { position: absolute; inset: 0; }
+      .dark .brilho { background: radial-gradient(ellipse at 50% 0, rgba(41,206,223,0.10), transparent 60%); }
+      .light .brilho { background: radial-gradient(ellipse at 50% 0, rgba(41,206,223,0.07), transparent 60%); }
+
+      /* cabeçalho estilo Twitter */
+      .tw { position: absolute; left: 80px; top: 76px; display: flex; align-items: center; gap: 22px; }
+      .tw .av { flex: none; width: 120px; height: 120px; border-radius: 50%; padding: 5px; background: linear-gradient(20deg, #FA8519 0%, #FA2C2A 40%, #F91391 75%, #D61AA8 100%); }
+      .tw .ph { position: relative; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #0BC0DE; }
+      .dark .tw .ph { border: 4px solid #000; }
+      .light .tw .ph { border: 4px solid #fff; }
+      .tw .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .tw .nm { display: flex; align-items: center; gap: 10px; font-size: 34px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+      .tw .nm svg { width: 34px; height: 34px; }
+      .tw .hd { font-size: 28px; font-weight: 400; margin-top: 4px; }
+      .dark .tw .hd { color: #8a8a8a; }
+      .light .tw .hd { color: var(--apoio); }
+
+      .selo { display: inline-flex; align-items: center; gap: 16px; padding: 14px 24px; border-radius: 16px; background: rgba(41,206,223,0.09); font-size: 28px; font-weight: 400; line-height: 1.5; }
+      .dark .selo { color: #29CEDF; border: 2px solid #292929; }
+      .light .selo { color: #006875; border: 2px solid #E5E5E5; }
+
+      .tit { font-weight: 600; letter-spacing: -0.045em; line-height: 0.97; }
+      .tit .l1 { display: block; color: var(--ciano); }
+      .dark .tit .l2 { display: block; color: #fff; }
+      .light .tit .l2 { display: block; color: var(--titulo); }
+
+      .apoio { font-size: 40px; font-weight: 400; line-height: 1.4; letter-spacing: -0.015em; }
+      .dark .apoio { color: var(--texto-escuro); }
+      .light .apoio { color: var(--texto); }
+      .apoio b { font-weight: 600; }
+      .dark .apoio b { color: #fff; }
+      .light .apoio b { color: var(--titulo); }
+
+      /* balão com seta (referência) */
+      .call { position: absolute; display: flex; align-items: center; border-radius: 22px; padding: 30px 40px 30px 66px; font-size: 36px; line-height: 1.35; letter-spacing: -0.015em; }
+      .call .seta { position: absolute; left: -32px; top: 50%; margin-top: -32px; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+      .call .seta svg { width: 30px; height: 30px; }
+      .dark .call { background: #fff; color: var(--titulo); }
+      .dark .call .seta { background: var(--ciano); color: #000; }
+      .light .call { background: var(--escuro); color: #fff; }
+      .light .call .seta { background: var(--ciano); color: #000; }
+
+      /* card de lista */
+      .lista { position: absolute; background: var(--escuro); color: #fff; border-radius: 28px; padding: 50px 54px; font-size: 38px; line-height: 1.35; letter-spacing: -0.015em; }
+      .lista li { list-style: none; position: relative; padding-left: 58px; }
+      .lista li + li { margin-top: 28px; }
+      .lista li::before { content: ""; position: absolute; left: 0; top: 7px; width: 34px; height: 34px;
+        background: no-repeat center / contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2329CEDF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12h14M13 6l6 6-6 6'/></svg>"); }
+
+      /* escala NPS */
+      .nps { background: #fff; border-radius: 28px; padding: 44px 44px 40px; box-shadow: 0 24px 60px rgba(41,206,223,0.07); }
+      .nps .q { font-size: 38px; font-weight: 500; line-height: 1.3; letter-spacing: -0.02em; color: var(--titulo); }
+      .nps .esc { display: flex; justify-content: space-between; margin-top: 34px; }
+      .nps .esc span { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 600; }
+      .nps .d { background: #EFEFEF; color: var(--texto); }
+      .nps .n { border: 3px solid var(--ciano); color: var(--ciano-escuro); }
+      .nps .p { background: var(--ciano); color: #000; }
+      .nps .leg { display: flex; justify-content: space-between; margin-top: 18px; font-size: 24px; font-weight: 500; color: var(--apoio); }
+      .nps .leg span:nth-child(1) { width: 548px; text-align: center; border-top: 2px solid #E5E5E5; padding-top: 12px; }
+      .nps .leg span:nth-child(2) { width: 156px; text-align: center; border-top: 2px solid var(--ciano); padding-top: 12px; }
+      .nps .leg span:nth-child(3) { width: 156px; text-align: center; border-top: 2px solid var(--ciano); padding-top: 12px; color: var(--ciano-escuro); }
+
+      .rodape { position: absolute; left: 80px; right: 80px; bottom: 70px; display: flex; justify-content: space-between; align-items: center; font-size: 26px; font-weight: 500; }
+      .dark .rodape { color: #8a8a8a; }
+      .light .rodape { color: var(--apoio); }
+
+      /* slide 1 */
+      .capa .selo { position: absolute; left: 80px; top: 250px; }
+      .capa .tit { position: absolute; left: 80px; top: 335px; width: 940px; font-size: 90px; }
+      .capa .nps { position: absolute; left: 110px; top: 680px; width: 860px; transform: rotate(-2deg); }
+      .light.capa .nps { border: 2px solid #E5E5E5; box-shadow: 0 30px 80px rgba(0,0,0,0.06); }
+      .capa .call { left: 140px; top: 1160px; padding-top: 24px; padding-bottom: 24px; white-space: nowrap; }
+
+
+      /* capa: Google Maps + WhatsApp */
+      .maps { position: absolute; left: 80px; top: 640px; width: 620px; border-radius: 26px; overflow: hidden; background: #fff; transform: rotate(-2deg); box-shadow: 0 20px 50px rgba(0,0,0,0.10); }
+      .light .maps { border: 2px solid #E5E5E5; }
+      .maps .mapa { position: relative; height: 140px; background: #EEF1EC; overflow: hidden; }
+      .maps .mapa svg.fundo { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .maps .pino { position: absolute; left: 50%; top: 22px; width: 64px; height: 84px; margin-left: -32px; }
+      .maps .corpo { padding: 26px 32px 30px; font-family: Roboto, sans-serif; }
+      .maps .nome { font-size: 31px; font-weight: 500; color: #202124; letter-spacing: -0.01em; }
+      .maps .nota { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 28px; color: #70757A; }
+      .maps .nota b { font-weight: 500; color: #202124; }
+      .maps .nota .est { display: flex; gap: 2px; }
+      .maps .nota .est svg { width: 28px; height: 28px; }
+      .maps .cat { margin-top: 8px; font-size: 26px; color: #70757A; }
+      .maps .cat i { font-style: normal; color: #188038; }
+
+      .zap { position: absolute; left: 500px; top: 800px; width: 500px; border-radius: 26px; overflow: hidden; background: #EFEAE2; transform: rotate(2deg); box-shadow: 0 24px 60px rgba(0,0,0,0.16); font-family: Roboto, sans-serif; }
+      .zap .topo { display: flex; align-items: center; gap: 14px; padding: 16px 22px; background: #fff; border-bottom: 1px solid #E9EDEF; }
+      .zap .topo svg { width: 44px; height: 44px; }
+      .zap .topo span { font-size: 26px; font-weight: 500; color: #111B21; }
+      .zap .bolha { margin: 20px 20px 22px 44px; padding: 16px 20px 10px; background: #D9FDD3; border-radius: 18px 4px 18px 18px; font-size: 24px; line-height: 1.38; color: #111B21; }
+      .zap .link { margin-top: 12px; padding: 12px 16px; border-radius: 12px; background: #C7F0C0; font-size: 22px; color: #027EB5; }
+      .zap .link b { display: block; font-weight: 500; color: #111B21; font-size: 23px; margin-bottom: 2px; }
+      .zap .hora { margin-top: 6px; text-align: right; font-size: 20px; color: #667781; }
+      .zap .hora em { font-style: normal; color: #53BDEB; }
+      .emo { font-family: "Apple Color Emoji", sans-serif; }
+
+      /* slide 2 */
+      #c2 .tit { position: absolute; left: 80px; top: 300px; width: 940px; font-size: 92px; }
+      #c2 .apoio { position: absolute; left: 80px; top: 570px; width: 920px; }
+      #c2 .lista { left: 80px; top: 850px; width: 920px; }
+
+      /* slide 3 */
+      #c3 .tit { position: absolute; left: 80px; top: 270px; width: 940px; font-size: 92px; }
+      #c3 .apoio { position: absolute; left: 80px; top: 500px; width: 920px; }
+      #c3 .nps { position: absolute; left: 80px; top: 690px; width: 920px; }
+      #c3 .call { left: 160px; top: 1090px; width: 760px; }
+
+      /* slides 4, 5, 6 */
+      .faixa .tit { position: absolute; left: 80px; top: 310px; width: 940px; font-size: 120px; }
+      .faixa .tit .l2 { font-size: 92px; margin-top: 10px; }
+      .faixa .apoio { position: absolute; left: 80px; top: 610px; width: 920px; }
+      .faixa .lista { left: 80px; top: 850px; width: 920px; }
+      .faixa .num { position: absolute; right: 80px; top: 318px; display: flex; gap: 12px; }
+      .faixa .num span { min-width: 92px; height: 92px; padding: 0 26px; border-radius: 60px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 600; }
+
+      .faixa .emoji { position: absolute; right: 90px; top: 440px; font-size: 150px; line-height: 1; transform: rotate(8deg); }
+
+      /* slide 7 */
+      #c7 .tit { position: absolute; left: 80px; top: 300px; width: 940px; font-size: 92px; }
+      #c7 .itens { position: absolute; left: 80px; top: 570px; width: 920px; border-top: 2px solid var(--borda-escura); }
+      #c7 .it { display: flex; gap: 34px; padding: 46px 0; border-bottom: 2px solid var(--borda-escura); }
+      #c7 .it svg { flex: none; width: 64px; height: 64px; margin-top: 4px; }
+      #c7 .it h3 { font-size: 42px; font-weight: 600; letter-spacing: -0.03em; color: #fff; }
+      #c7 .it p { margin-top: 10px; font-size: 34px; line-height: 1.4; color: var(--texto-escuro); letter-spacing: -0.01em; }
+
+      /* slide 8 · Invisible */
+      .sl.azul { background: #2664EB; color: #fff; }
+      .azul .tw .ph { border: 4px solid #2664EB; }
+      .azul .tw .hd { color: rgba(255,255,255,0.75); }
+      .azul .tit .l1 { color: #A8F0F7; }
+      .azul .tit .l2 { display: block; color: #fff; }
+      #c8 .inv { position: absolute; left: 80px; top: 262px; height: 64px; }
+      #c8 .tit { position: absolute; left: 80px; top: 380px; width: 940px; font-size: 88px; }
+      #c8 .apoio { position: absolute; left: 80px; top: 590px; width: 900px; font-size: 38px; color: rgba(255,255,255,0.88); }
+      #c8 .chk { position: absolute; left: 80px; top: 760px; width: 920px; list-style: none; }
+      #c8 .chk li { display: flex; align-items: center; gap: 20px; font-size: 36px; line-height: 1.3; letter-spacing: -0.015em; color: #fff; }
+      #c8 .chk li + li { margin-top: 22px; }
+      #c8 .chk svg { flex: none; width: 40px; height: 40px; }
+      #c8 .btn { position: absolute; left: 80px; top: 1070px; display: flex; align-items: center; gap: 18px; background: var(--verde); color: #000; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; padding: 32px 48px; border-radius: 24px; }
+      #c8 .btn svg { width: 40px; height: 40px; }
+      #c8 .url { position: absolute; left: 80px; top: 1208px; font-size: 30px; font-weight: 500; color: rgba(255,255,255,0.8); }
+
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="9" data-width="1080" data-height="1350">
+
+      <!-- 1 · capa -->
+      <div id="c1" class="sl dark capa clip" data-start="0" data-duration="1" data-track-index="0">
+        <div class="grade"></div><div class="brilho"></div>
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="selo">Avaliações no Google</div>
+        <div class="tit"><span class="l1">Como conseguir mais</span><span class="l2">avaliações 5 estrelas</span><span class="l2">pelo WhatsApp</span></div>
+        <div class="maps">
+          <div class="mapa">
+            <svg class="fundo" viewBox="0 0 620 150" preserveAspectRatio="none">
+              <path d="M0 110 C120 95 200 140 330 120 S520 90 620 105 L620 150 L0 150 Z" fill="#AADAFF"/>
+              <path d="M40 0 C70 30 60 70 120 80 S170 40 210 0 Z" fill="#C8EBCB"/>
+              <path d="M470 0 C450 40 520 70 580 50 L620 30 L620 0 Z" fill="#C8EBCB"/>
+              <path d="M0 62 L620 48" stroke="#fff" stroke-width="14"/>
+              <path d="M260 0 L300 150" stroke="#fff" stroke-width="12"/>
+              <path d="M0 20 L620 92" stroke="#FDE293" stroke-width="10"/>
+              <path d="M430 0 L410 150" stroke="#fff" stroke-width="8"/>
+            </svg>
+            <svg class="pino" viewBox="0 0 24 32"><path fill="#EA4335" d="M12 1C6.5 1 2 5.4 2 10.9 2 18.3 12 31 12 31s10-12.7 10-20.1C22 5.4 17.5 1 12 1z"/><circle cx="12" cy="11" r="3.8" fill="#A50E0E"/></svg>
+          </div>
+          <div class="corpo">
+            <div class="nome">Consultório Dr. João Silva</div>
+            <div class="nota"><b>5,0</b><span class="est"><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg></span>(312)</div>
+            <div class="cat">Médico · <i>Aberto agora</i></div>
+          </div>
+        </div>
+        <div class="zap">
+          <div class="topo"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#25D366"/><path fill="#fff" d="M16 6.5a9.4 9.4 0 0 0-8.1 14.2L6.6 25.5l4.9-1.3A9.4 9.4 0 1 0 16 6.5zm0 17.1c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 16 23.6zm4.2-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.3 6.3 0 0 1-3.1-2.7c-.2-.4.2-.4.7-1.2.1-.1 0-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1l-.6-.2z"/></svg><span>Consultório Dr. João Silva</span></div>
+          <div class="bolha">Que bom que gostou da consulta, Maria! <span class="emo">💚</span> Deixa sua avaliação aqui:
+            <div class="link"><b>Avalie no Google</b>g.page/consultorio-drjoaosilva</div>
+            <div class="hora">10:42 <em>✓✓</em></div>
+          </div>
+        </div>
+        <div class="call"><span class="seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Arrasta pro lado e veja o passo a passo.</div>
+      </div>
+
+      <!-- 2 · o erro -->
+      <div id="c2" class="sl light clip" data-start="1" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="tit"><span class="l1">O erro mais comum</span><span class="l2">é pedir pra todos.</span></div>
+        <div class="apoio">A maioria dos consultórios manda o link do Google pra <b>todo paciente</b> no WhatsApp, sem saber como ele saiu da consulta.</div>
+        <ul class="lista">
+          <li>Insatisfeitos também recebem o link</li>
+          <li>A nota baixa aparece sem aviso</li>
+          <li>Você descobre o problema em público</li>
+        </ul>
+      </div>
+
+      <!-- 3 · a NPS -->
+      <div id="c3" class="sl dark clip" data-start="2" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="tit"><span class="l1">Primeiro, a gente</span><span class="l2">aplica uma NPS.</span></div>
+        <div class="apoio">Uma pergunta só, enviada pelo <b>WhatsApp</b> depois da consulta:</div>
+        <div class="nps">
+          <div class="q">Numa escala de 0 a 10, qual a chance de você indicar o Dr. João Silva para alguém?</div>
+          <div class="esc"><span class="d">0</span><span class="d">1</span><span class="d">2</span><span class="d">3</span><span class="d">4</span><span class="d">5</span><span class="d">6</span><span class="n">7</span><span class="n">8</span><span class="p">9</span><span class="p">10</span></div>
+          <div class="leg"><span>detrator</span><span>neutro</span><span>promotor</span></div>
+        </div>
+        <div class="call"><span class="seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>A nota decide o próximo passo.</div>
+      </div>
+
+      <!-- 4 · 9 ou 10 -->
+      <div id="c4" class="sl light faixa clip" data-start="3" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="tit"><span class="l1">9 ou 10</span><span class="l2">Promotor</span></div>
+        <div class="emoji emo">😍</div>
+        <div class="num"><span style="background:#29CEDF;color:#000">9</span><span style="background:#29CEDF;color:#000">10</span></div>
+        <div class="apoio">Esse paciente <b>recebe o link pra deixar a avaliação no Google.</b></div>
+        <ul class="lista">
+          <li>Saiu feliz da consulta</li>
+          <li>Tem mais chance de dar 5 estrelas</li>
+          <li>Vira prova social pro próximo paciente</li>
+        </ul>
+      </div>
+
+      <!-- 5 · 7 ou 8 -->
+      <div id="c5" class="sl light faixa clip" data-start="4" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="tit"><span class="l1">7 ou 8</span><span class="l2">Neutro</span></div>
+        <div class="emoji emo">😐</div>
+        <div class="num"><span style="border:4px solid #29CEDF;color:#006875">7</span><span style="border:4px solid #29CEDF;color:#006875">8</span></div>
+        <div class="apoio">Esse paciente recebe a próxima pergunta: <b>o que faltou pra chegar no 10?</b></div>
+        <ul class="lista">
+          <li>Você descobre o detalhe que incomodou</li>
+          <li>A resposta vira melhoria no atendimento</li>
+          <li>O próximo paciente já encontra isso resolvido</li>
+        </ul>
+      </div>
+
+      <!-- 6 · 0 a 6 -->
+      <div id="c6" class="sl light faixa clip" data-start="5" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="tit"><span class="l1">De 0 a 6</span><span class="l2">Detrator</span></div>
+        <div class="emoji emo">😡</div>
+        <div class="num"><span style="background:#EFEFEF;color:#444">0–6</span></div>
+        <div class="apoio">É um paciente que vai falar mal. <b>A secretária é avisada na hora.</b></div>
+        <ul class="lista">
+          <li>Ela precisa resolver a vida desse paciente</li>
+          <li>O problema é tratado no privado, antes de virar nota baixa</li>
+          <li>Esse paciente não recebe o link do Google</li>
+        </ul>
+      </div>
+
+      <!-- 7 · o que você ganha -->
+      <div id="c7" class="sl dark clip" data-start="6" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="tit"><span class="l1">Na prática, você</span><span class="l2">ganha três coisas.</span></div>
+        <div class="itens">
+          <div class="it">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#29CEDF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg>
+            <div><h3>Reputação no Google</h3><p>O link só vai pra quem saiu feliz da consulta.</p></div>
+          </div>
+          <div class="it">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#29CEDF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="2.5"/></svg>
+            <div><h3>Posicionamento nas IAs</h3><p>Elas também olham pras suas avaliações.</p></div>
+          </div>
+          <div class="it">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#29CEDF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/><path d="M8.5 12h7M8.5 9h4"/></svg>
+            <div><h3>Experiência do paciente</h3><p>Feedback concreto pra aplicar melhorias no atendimento.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 · CTA Invisible CRM -->
+      <div id="c8" class="sl azul clip" data-start="7" data-duration="1" data-track-index="0">
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <img class="inv" src="assets/invisible-branco.png" alt="Invisible CRM" />
+        <div class="tit"><span class="l1">Automatize tudo isso</span><span class="l2">com o Invisible CRM</span></div>
+        <div class="apoio">A NPS e o pedido de avaliação no Google saem sozinhos pelo WhatsApp.</div>
+        <ul class="chk">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#A8F0F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>API oficial do WhatsApp</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#A8F0F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Pesquisas NPS e pedidos de avaliação</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#A8F0F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Fluxos com esperas e condições</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#A8F0F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Secretária Virtual com IA</li>
+        </ul>
+        <div class="btn">Agende uma demonstração <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="url">we.marketing/crm</div>
+      </div>
+
+      <!-- 1b · capa clara -->
+      <div id="c1b" class="sl light capa clip" data-start="8" data-duration="1" data-track-index="0">
+        <div class="grade"></div><div class="brilho"></div>
+        <div class="tw">
+          <div class="av"><div class="ph"><img src="assets/avatar-ig.png" alt="" /></div></div>
+          <div><div class="nm">WE Marketing Médico <svg viewBox="0 0 24 24"><path fill="#0095F6" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-3.99-3.82-3.99-.47 0-.92.08-1.34.25C14.77 2.43 13.47 1.5 12 1.5s-2.77.93-3.39 2.21c-.42-.17-.87-.25-1.34-.25-2.11 0-3.82 1.78-3.82 3.99 0 .49.08.96.23 1.4C2.38 9.55 1.5 10.92 1.5 12.5c0 1.5.79 2.8 1.97 3.53-.03.2-.04.4-.04.6 0 2.21 1.7 3.99 3.82 3.99.47 0 .92-.09 1.34-.25.62 1.29 1.92 2.13 3.41 2.13 1.48 0 2.78-.84 3.4-2.13.42.16.87.25 1.34.25 2.12 0 3.82-1.78 3.82-3.99 0-.2-.01-.4-.04-.6 1.17-.73 1.98-2.03 1.98-3.53z"/><path fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 12.5l2.6 2.6L16.2 9.5"/></svg></div><div class="hd">@wemarketingmedico</div></div>
+        </div>
+        <div class="selo">Avaliações no Google</div>
+        <div class="tit"><span class="l1">Como conseguir mais</span><span class="l2">avaliações 5 estrelas</span><span class="l2">pelo WhatsApp</span></div>
+        <div class="maps">
+          <div class="mapa">
+            <svg class="fundo" viewBox="0 0 620 150" preserveAspectRatio="none">
+              <path d="M0 110 C120 95 200 140 330 120 S520 90 620 105 L620 150 L0 150 Z" fill="#AADAFF"/>
+              <path d="M40 0 C70 30 60 70 120 80 S170 40 210 0 Z" fill="#C8EBCB"/>
+              <path d="M470 0 C450 40 520 70 580 50 L620 30 L620 0 Z" fill="#C8EBCB"/>
+              <path d="M0 62 L620 48" stroke="#fff" stroke-width="14"/>
+              <path d="M260 0 L300 150" stroke="#fff" stroke-width="12"/>
+              <path d="M0 20 L620 92" stroke="#FDE293" stroke-width="10"/>
+              <path d="M430 0 L410 150" stroke="#fff" stroke-width="8"/>
+            </svg>
+            <svg class="pino" viewBox="0 0 24 32"><path fill="#EA4335" d="M12 1C6.5 1 2 5.4 2 10.9 2 18.3 12 31 12 31s10-12.7 10-20.1C22 5.4 17.5 1 12 1z"/><circle cx="12" cy="11" r="3.8" fill="#A50E0E"/></svg>
+          </div>
+          <div class="corpo">
+            <div class="nome">Consultório Dr. João Silva</div>
+            <div class="nota"><b>5,0</b><span class="est"><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path fill="#FBBC04" d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5-4.9-4.5 6.6-.8z"/></svg></span>(312)</div>
+            <div class="cat">Médico · <i>Aberto agora</i></div>
+          </div>
+        </div>
+        <div class="zap">
+          <div class="topo"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#25D366"/><path fill="#fff" d="M16 6.5a9.4 9.4 0 0 0-8.1 14.2L6.6 25.5l4.9-1.3A9.4 9.4 0 1 0 16 6.5zm0 17.1c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A7.7 7.7 0 1 1 16 23.6zm4.2-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.3 6.3 0 0 1-3.1-2.7c-.2-.4.2-.4.7-1.2.1-.1 0-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1l-.6-.2z"/></svg><span>Consultório Dr. João Silva</span></div>
+          <div class="bolha">Que bom que gostou da consulta, Maria! <span class="emo">💚</span> Deixa sua avaliação aqui:
+            <div class="link"><b>Avalie no Google</b>g.page/consultorio-drjoaosilva</div>
+            <div class="hora">10:42 <em>✓✓</em></div>
+          </div>
+        </div>
+        <div class="call"><span class="seta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Arrasta pro lado e veja o passo a passo.</div>
+      </div>
+
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>
