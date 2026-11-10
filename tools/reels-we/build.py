@@ -10,6 +10,7 @@ Uso: python3 build.py NN
 import html, json, re, shutil, subprocess, sys
 from pathlib import Path
 from caminhos import ASSETS, HF, HF_CLI, NPX, TMP
+import portatil
 
 NN = sys.argv[1]
 P = HF / f"we-corte-{NN}"
@@ -940,6 +941,7 @@ def capa():
   </body>
 </html>
 """)
+    portatil.prepara(d)
     snap = TMP / f"capa-{NN}"
     shutil.rmtree(snap, ignore_errors=True)
     out = subprocess.run([NPX, "--yes", HF_CLI, "snapshot", str(d), "--at", "0.5", "--no-end", "--describe", "false", "-o", str(snap)],
@@ -969,4 +971,5 @@ if M == "B" and S.get("gancho"):
     (P / "compositions/gancho.html").write_text(gancho_html(S["gancho"]))
 (P / "compositions/legendas.html").write_text(legendas_html())
 (P / "index.html").write_text(index_html())
+portatil.prepara(P)
 print("ok", P, "modelo", M, "duracao", TOTAL, "planos", planos, "cenas", cenas_b())

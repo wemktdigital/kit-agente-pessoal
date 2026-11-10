@@ -93,5 +93,6 @@ Rode sempre de dentro de `~/tools/reels-we`. Se `WE_DOCS` estiver definido (Wind
 - Instalação: `instalar.ps1` na raiz do kit.
 - PowerShell, passo 3: `$env:ENTREGA="$HOME\Documents\hyperframes\we-corte-NN\fonte"; & "$HOME\tools\Applio\env\python.exe" prep.py NN`.
 - `caminhos.py` reexecuta o Python em UTF-8 sozinho. Se ler JSON com acento der erro, confira `PYTHONUTF8=1`.
-- Emoji: o Windows não tem Apple Color Emoji. O build cai para Segoe UI Emoji, com desenho diferente. Mais um motivo para usar ícone real.
+- Fontes e emoji: o `build.py` embute as fontes do kit (Inter, Roboto, Montserrat, Oswald, Playfair) e troca emoji por PNG da Apple (`portatil.py`), então capa, legendas e cards saem iguais ao Mac. Só use essas fontes e emoji que tenham PNG em `assets/emoji/` (o build avisa os que faltam).
+- Mexeu à mão no HTML (capa, cards) ou num projeto antigo? Rode `python portatil.py <pasta-do-projeto>` antes do snapshot/render. Ele é idempotente e também trata `capa/`.
 - `npx` vira `npx.cmd` e o temporário é `%TEMP%`; os scripts já tratam isso.
