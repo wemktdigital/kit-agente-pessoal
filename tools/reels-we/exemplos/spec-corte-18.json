@@ -1,0 +1,105 @@
+{
+  "modelo": "C",
+  "quem": "wa",
+  "trocas": [
+    [
+      0.0,
+      7.25,
+      "ed"
+    ]
+  ],
+  "chave": [
+    "DIFERENÇA",
+    "AVALIAÇÕES",
+    "REPUTAÇÃO",
+    "DEPOIMENTOS",
+    "REAIS",
+    "PROCEDIMENTO",
+    "NOME",
+    "FOTO",
+    "ACOLHEDOR",
+    "LASTRO",
+    "NÚMERO",
+    "GOOGLE"
+  ],
+  "cards": [
+    {
+      "tipo": "versus",
+      "de": 0.38,
+      "ate": 7.2,
+      "titulo": "Qual a diferença?",
+      "meio": "vs",
+      "esq": {
+        "titulo": "Avaliações",
+        "txt": "só a nota",
+        "t": 2.61
+      },
+      "dir": {
+        "titulo": "Reputação",
+        "txt": "no Google",
+        "ok": true,
+        "t": 4.78
+      }
+    },
+    {
+      "tipo": "perfil",
+      "de": 8.04,
+      "ate": 11.31,
+      "titulo": "Perfil no Google",
+      "nome": "Dr. João Silva",
+      "sub": "Médico · Perfil no Google",
+      "nota": "4,8",
+      "rotulo": "20 avaliações",
+      "t": 9.3
+    },
+    {
+      "tipo": "review",
+      "de": 11.41,
+      "ate": 28.34,
+      "titulo": "Depoimento real",
+      "autor": "Carla Menezes",
+      "cor": "#E8710A",
+      "quando": "há 2 dias",
+      "texto": "Fiz minha cirurgia de catarata com o Dr. João Silva. Equipe atenciosa e ambiente super acolhedor!",
+      "foto": "assets/clinica.jpg",
+      "t_foto": 24.48,
+      "t": 14.01,
+      "dur_texto": 11.0,
+      "t_estrelas": 12.68
+    },
+    {
+      "tipo": "frase",
+      "de": 28.49,
+      "ate": 36.56,
+      "titulo": "Reputação online",
+      "texto": "Vai além do número:<br />um *lastro de reputação*",
+      "t": 34.17
+    }
+  ],
+  "notif": {
+    "de": 28.59,
+    "ate": 31.18,
+    "titulo": "Nova avaliação ⭐",
+    "texto": "“Ambiente acolhedor, recomendo!”",
+    "t_estrelas": 28.86
+  },
+  "trilha": {
+    "arq": "lofi-moderno.mp3",
+    "volume": 0.269153
+  },
+  "capa": {
+    "linhas": [
+      "Só a nota",
+      "sem texto",
+      "não conta"
+    ],
+    "emojis": [
+      "",
+      "",
+      "❌",
+      "🏆"
+    ],
+    "t": 12.2,
+    "cam": "wa"
+  }
+}

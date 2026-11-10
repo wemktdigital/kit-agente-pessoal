@@ -1,36 +1,50 @@
 # Kit agente pessoal — HyperFrames / WE
 
-Aprendizados e modelos **seus** para posts WE no HyperFrames. Serve pra clonar em outra máquina.
-
-A skill oficial HyperFrames (HeyGen) fica fora daqui. Na máquina nova:
-
-```bash
-npx hyperframes skills update
-```
+Tudo que faz os vídeos e posts da WE saírem no padrão aprovado, para instalar em outra máquina.
 
 ## Conteúdo
 
 | Pasta | O quê |
 | --- | --- |
-| `skills/we-posts` | Fluxo carrossel + stories WE |
+| `skills/we-reels` | Fluxo dos reels do podcast + regras aprovadas nos chats |
+| `skills/we-posts` | Carrossel + stories WE |
+| `tools/reels-we` | Pipeline dos reels: `recorte.py`, `prep.py`, `build.py`, `dub.py`, assets (trilhas, SFX, fecho) e exemplos de `spec.json` |
 | `we-modelos/` | Templates HTML aprovados (feed + stories) |
+| `instalar.ps1` | Instalação completa no Windows |
+| `instalar.sh` | Ligação das skills e do pipeline no macOS |
 
-## Máquina nova
+Fora do git, baixado pelo instalador:
+
+- Vozes treinadas (RVC) do Waldeir e do Edson: Release `vozes-v1` deste repo.
+- Modelos Whisper (`ggml-small`, `ggml-large-v3`), Applio, Kokoro.
+- Repo `wemktdigital/decupagem-videos`.
+
+## Windows
+
+```powershell
+git clone https://github.com/wemktdigital/kit-agente-pessoal.git "$HOME\Documents\kit-agente-pessoal"
+cd "$HOME\Documents\kit-agente-pessoal"
+powershell -ExecutionPolicy Bypass -File .\instalar.ps1
+```
+
+O instalador usa o winget para Git, Node, FFmpeg, GitHub CLI e Python 3.11. Depois instala whisper.cpp + modelos, Kokoro, Applio (torch, alguns GB), as vozes, o `decupagem-videos`, os MCPs Envato e Canva e as skills oficiais do HyperFrames. Ele pede login no GitHub (`gh auth login`) para baixar as vozes e o repo privado.
+
+Opções: `-SemApplio` (sem dublagem EN/ES), `-SemWhisperLarge` (pula o modelo de 3 GB).
+
+Depois: reabrir o Cursor, fazer login no Envato e no Canva em Settings > MCP e abrir um chat novo.
+
+## macOS
 
 ```bash
-git clone <url-do-repo> ~/Documents/kit-agente-pessoal
-cd ~/Documents/kit-agente-pessoal
-chmod +x instalar.sh && ./instalar.sh
+git clone https://github.com/wemktdigital/kit-agente-pessoal.git ~/Documents/kit-agente-pessoal
+cd ~/Documents/kit-agente-pessoal && ./instalar.sh
 npx hyperframes skills update
 ```
 
-Abra um **chat novo** no Cursor depois do install.
+No Mac, Applio, Kokoro e Whisper ainda são instalados à mão (ver `skills/we-reels/SKILL.md`).
 
 ## Atualizar
 
-Nesta máquina: edite `skills/we-posts` ou `we-modelos` → `git commit` → `git push`.  
-Na outra: `git pull` (com `./instalar.sh` em modo link, não reinstala).
+Edite as skills, os scripts ou os modelos **dentro deste repo** → `git commit` → `git push`. Na outra máquina: `git pull`. Os links do instalador fazem a mudança valer na hora.
 
-## Fora deste kit
-
-Pipeline CapCut, Canva e skills HeyGen oficiais. CapCut continua no repo `wemktdigital/agentes-video-capcut` se precisar um dia.
+Não edite `~/.claude/skills/hyperframes*` para guardar aprendizado: o próximo `skills update` apaga.

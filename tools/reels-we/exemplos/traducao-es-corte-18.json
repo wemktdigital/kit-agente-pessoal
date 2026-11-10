@@ -1,0 +1,57 @@
+{
+  "voz": "em_alex",
+  "pitch": -1,
+  "frases": [
+    "hay una diferencia",
+    "entre solo conseguir reseñas",
+    "y crear una reputación en Google?",
+    "Claro que sí.",
+    "Entonces, a veces la persona tiene unas 20",
+    "reseñas, pero son solo esas reseñas",
+    "No hay testimonios reales ahí,",
+    "la persona",
+    "dejando un texto, diciendo qué procedimiento",
+    "se hizo.",
+    "elogiando, mencionando tu nombre ahí",
+    "a veces dejando una foto de tu clínica,",
+    "diciendo que el ambiente fue acogedor.",
+    "Entonces este tipo de cosas va construyendo",
+    "algo que va más allá de ese número,",
+    "que va generando un respaldo de tu reputación",
+    "online."
+  ],
+  "chave": ["DIFERENCIA", "RESEÑAS", "REPUTACIÓN", "TESTIMONIOS", "REALES", "PROCEDIMIENTO", "NOMBRE", "FOTO", "ACOGEDOR", "RESPALDO", "NÚMERO", "GOOGLE"],
+  "capa": {
+    "linhas": ["Solo la nota", "sin texto", "no cuenta"],
+    "emojis": ["", "", "❌", "🏆"]
+  },
+  "cards": [
+    {
+      "titulo": "¿Cuál es la diferencia?",
+      "meio": "vs",
+      "esq": {"titulo": "Reseñas", "txt": "solo la nota"},
+      "dir": {"titulo": "Reputación", "txt": "en Google", "ok": true}
+    },
+    {
+      "titulo": "Perfil en Google",
+      "nome": "Dr. João Silva",
+      "sub": "Médico · Perfil en Google",
+      "nota": "4,8",
+      "rotulo": "20 reseñas"
+    },
+    {
+      "titulo": "Testimonio real",
+      "autor": "Carla Menezes",
+      "quando": "hace 2 días",
+      "texto": "Me hice la cirugía de catarata con el Dr. João Silva. Equipo atento y un ambiente muy acogedor!"
+    },
+    {
+      "titulo": "Reputación online",
+      "texto": "Va más allá del número:<br />un *respaldo de reputación*"
+    }
+  ],
+  "notif": {
+    "titulo": "Nueva reseña ⭐",
+    "texto": "“Ambiente acogedor, lo recomiendo!”"
+  }
+}

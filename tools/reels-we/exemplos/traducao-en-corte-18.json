@@ -1,0 +1,57 @@
+{
+  "voz": "am_michael",
+  "pitch": 2,
+  "frases": [
+    "there's a difference",
+    "between just getting reviews",
+    "and building a reputation on Google?",
+    "Absolutely.",
+    "So sometimes someone has about 20",
+    "reviews, but they're only those reviews",
+    "There are no real testimonials there,",
+    "the person",
+    "leaving a text, naming which procedure she",
+    "had.",
+    "praising you, mentioning your name there",
+    "sometimes leaving a photo of your clinic,",
+    "saying the place felt welcoming.",
+    "So this kind of thing builds",
+    "something that goes beyond just that number,",
+    "that builds a real record of your reputation",
+    "online."
+  ],
+  "chave": ["DIFFERENCE", "REVIEWS", "REPUTATION", "TESTIMONIALS", "REAL", "PROCEDURE", "NAME", "PHOTO", "WELCOMING", "RECORD", "NUMBER", "GOOGLE"],
+  "capa": {
+    "linhas": ["Just a score", "no text", "doesn't count"],
+    "emojis": ["", "", "❌", "🏆"]
+  },
+  "cards": [
+    {
+      "titulo": "What's the difference?",
+      "meio": "vs",
+      "esq": {"titulo": "Reviews", "txt": "just the score"},
+      "dir": {"titulo": "Reputation", "txt": "on Google", "ok": true}
+    },
+    {
+      "titulo": "Google profile",
+      "nome": "Dr. João Silva",
+      "sub": "Doctor · Google profile",
+      "nota": "4.8",
+      "rotulo": "20 reviews"
+    },
+    {
+      "titulo": "Real testimonial",
+      "autor": "Carla Menezes",
+      "quando": "2 days ago",
+      "texto": "I had my cataract surgery with Dr. João Silva. Caring team and such a welcoming place!"
+    },
+    {
+      "titulo": "Online reputation",
+      "texto": "It goes beyond the number:<br />a *record of reputation*"
+    }
+  ],
+  "notif": {
+    "titulo": "New review ⭐",
+    "texto": "“Welcoming place, I recommend it!”"
+  }
+}

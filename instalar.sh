@@ -10,7 +10,7 @@ MODO="link"
 
 SKILLS_DIR="$HOME/.cursor/skills"
 BACKUP_DIR="$HOME/.cursor/skills-backup"
-SKILLS=(we-posts)
+SKILLS=(we-posts we-reels)
 
 echo "== Kit HyperFrames: $KIT ($MODO) =="
 mkdir -p "$SKILLS_DIR"
@@ -37,6 +37,21 @@ for s in "${SKILLS[@]}"; do
   fi
   echo "ok   $dst"
 done
+
+reels_src="$KIT/tools/reels-we"
+reels_dst="$HOME/tools/reels-we"
+mkdir -p "$HOME/tools"
+if [[ -L "$reels_dst" && "$(readlink "$reels_dst")" == "$reels_src" ]]; then
+  echo "ok   $reels_dst (já linkado)"
+else
+  if [[ -e "$reels_dst" || -L "$reels_dst" ]]; then
+    bk="$reels_dst-backup-$(date +%Y%m%d-%H%M%S)"
+    mv "$reels_dst" "$bk"
+    echo "     backup → $bk"
+  fi
+  ln -s "$reels_src" "$reels_dst"
+  echo "ok   $reels_dst → kit"
+fi
 
 HF="$HOME/Documents/hyperframes"
 if [[ -d "$HF" && ! -e "$HF/we-modelos" ]]; then
