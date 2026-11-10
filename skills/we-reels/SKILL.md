@@ -96,3 +96,9 @@ Rode sempre de dentro de `~/tools/reels-we`. Se `WE_DOCS` estiver definido (Wind
 - Fontes e emoji: o `build.py` embute as fontes do kit (Inter, Roboto, Montserrat, Oswald, Playfair) e troca emoji por PNG da Apple (`portatil.py`), então capa, legendas e cards saem iguais ao Mac. Só use essas fontes e emoji que tenham PNG em `assets/emoji/` (o build avisa os que faltam).
 - Mexeu à mão no HTML (capa, cards) ou num projeto antigo? Rode `python portatil.py <pasta-do-projeto>` antes do snapshot/render. Ele é idempotente e também trata `capa/`.
 - `npx` vira `npx.cmd` e o temporário é `%TEMP%`; os scripts já tratam isso.
+
+## Atualizar o kit
+
+`KIT_ROOT` = pasta do kit, dois níveis acima do destino do link `~/tools/reels-we` (Mac: `readlink ~/tools/reels-we`; Windows: `(Get-Item "$HOME\tools\reels-we").Target`), normalmente `~/Documents/kit-agente-pessoal`.
+
+Se pedirem para atualizar o kit, ou se faltar algo que esta skill cita (ex.: `exportar.py`, `portatil.py`), atualize: Windows `powershell -ExecutionPolicy Bypass -File "$KIT_ROOT\atualizar.ps1"`, Mac `"$KIT_ROOT/atualizar.sh"`. Depois peça para abrir um chat novo. Passo a passo e novidades em `KIT_ROOT/ATUALIZACOES.md`. Ao melhorar o kit, registre a mudança na seção "Novidades" desse arquivo.

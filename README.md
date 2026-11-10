@@ -12,6 +12,7 @@ Tudo que faz os vídeos e posts da WE saírem no padrão aprovado, para instalar
 | `we-modelos/` | Templates HTML aprovados (feed + stories) |
 | `instalar.ps1` | Instalação completa no Windows |
 | `instalar.sh` | Ligação das skills e do pipeline no macOS |
+| `atualizar.cmd` / `atualizar.ps1` / `atualizar.sh` | Atualização (ver [ATUALIZACOES.md](ATUALIZACOES.md)) |
 
 Fora do git, baixado pelo instalador:
 
@@ -45,6 +46,4 @@ No Mac, Applio, Kokoro e Whisper ainda são instalados à mão (ver `skills/we-r
 
 ## Atualizar
 
-Edite as skills, os scripts ou os modelos **dentro deste repo** → `git commit` → `git push`. Na outra máquina: `git pull`. Os links do instalador fazem a mudança valer na hora.
-
-Não edite `~/.claude/skills/hyperframes*` para guardar aprendizado: o próximo `skills update` apaga.
+Windows: dois cliques em `atualizar.cmd`. Mac: `./atualizar.sh`. Passo a passo, erros comuns e histórico de mudanças em [ATUALIZACOES.md](ATUALIZACOES.md).

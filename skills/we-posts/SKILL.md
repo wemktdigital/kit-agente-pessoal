@@ -86,3 +86,7 @@ Estilo orgânico, com cara de story feito no app. Sem foto ou ilustração de pe
 - Só use as fontes que vêm no kit: Inter, Roboto, Montserrat, Oswald e Playfair Display (qualquer peso). Outra família depende do Google na hora e do que está instalado na máquina.
 - Emoji: use os que têm PNG em `KIT_ROOT/tools/reels-we/assets/emoji/` (nome = código do emoji, ex. `1f60d.png` = 😍). O export avisa os que não têm PNG; troque por um que tenha ou gere no Mac com `python gerar_emoji.py <emoji>` (precisa de Pillow) e suba no kit.
 - Não apague o bloco `<style data-fontes-kit>` nem as `<img class="emoji-img">` que o export coloca no `index.html`.
+
+## Atualizar o kit
+
+Se pedirem para atualizar o kit, ou se faltar algo que esta skill cita (ex.: `exportar.py`, `portatil.py`), atualize: Windows `powershell -ExecutionPolicy Bypass -File "$KIT_ROOT\atualizar.ps1"`, Mac `"$KIT_ROOT/atualizar.sh"`. Depois peça para abrir um chat novo. Passo a passo e novidades em `KIT_ROOT/ATUALIZACOES.md`. Ao melhorar o kit, registre a mudança na seção "Novidades" desse arquivo.
