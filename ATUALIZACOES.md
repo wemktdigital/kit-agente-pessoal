@@ -38,6 +38,10 @@ Toda melhoria vai **dentro deste repo** (skills, `tools/reels-we`, `we-modelos`)
 
 ## Novidades
 
+### 2026-11-13 — dublagem: confirmar quem fala
+- Skill `we-reels`: antes de dublar, confirmar se quem fala é o Edson (cabelo e barba grisalhos, `c06-dir`) ou o Waldeir (`c06-esq`). Se já existe dublagem anterior, manter a voz dela.
+- Motivo: no 444b1b67 (solo do Edson) a dublagem EN/ES saiu com a voz do Waldeir.
+
 ### 2026-11-10 — fontes e emoji iguais ao Mac
 - Fontes (Inter, Roboto, Montserrat, Oswald, Playfair) e emoji da Apple embutidos: capa, carrossel e stories saem iguais ao Mac.
 - Carrossel e stories exportam com `python exportar.py` (o antigo `exportar.sh` saiu).

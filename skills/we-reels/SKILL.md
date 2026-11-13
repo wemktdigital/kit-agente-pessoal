@@ -78,6 +78,8 @@ Rode sempre de dentro de `~/tools/reels-we`. Se `WE_DOCS` estiver definido (Wind
 **EN/ES**
 - O PT começa sozinho e abaixa quando a dublagem entra (`entra`, `pt_baixo`, `pt_some`). PT e dublagem ficam em faixas de áudio separadas.
 - Vozes: `wa` = Waldeir (c06-esq), `ed` = Edson (c06-dir), via RVC no Applio.
+- Confirme quem fala antes de dublar. O Edson é o de cabelo grisalho cacheado e barba grisalha; o outro é o Waldeir. Vídeo solo vindo do CapCut (`we-<hash>`) pode ser de qualquer um dos dois: o nome da pasta não diz, e "WE" não quer dizer Waldeir.
+- Se o projeto já tem dublagem ou script anterior (`dublar.py`, `roteiro.json`, cache `*-rvc.wav`), mantenha a voz que ele usa (ex.: `c06-dir` = Edson). Só troque com confirmação do usuário.
 
 **Edição manual do usuário**
 - O usuário ajusta direto no HyperFrames (texto, volume, camadas desativadas). Antes de mexer, rode `npx hyperframes history --since mine` e preserve esses ajustes.
